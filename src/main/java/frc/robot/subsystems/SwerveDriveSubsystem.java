@@ -160,39 +160,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
-
-  //TEST and fix FIRST
-  // public void driveLimelight(boolean fieldRelative) {
-   
-  //   double xSpeed =
-  //       -m_magLimiter.calculate(MathUtil.applyDeadband(RobotContainer.driverController.getLeftY(), 0.02))
-  //           * Constants.DriveConstants.kMaxSpeedMetersPerSecond;
-
-  //   double ySpeed =
-  //       -m_magLimiter.calculate(-MathUtil.applyDeadband(RobotContainer.driverController.getLeftX(), 0.02))
-  //           * Constants.DriveConstants.kMaxSpeedMetersPerSecond;
-
-  //   double rot =
-  //       -m_rotLimiter.calculate(MathUtil.applyDeadband(RobotContainer.driverController.getRightX(), 0.02))
-  //           * Constants.DriveConstants.kMaxAngularSpeed;
-
-  //   if(RobotContainer.coDriverController.a().getAsBoolean())
-  //   {
-  //       final double rot_limelight = LimelightSubsystem.limelightAimProportional();
-  //       rot = rot_limelight;
-
-  //       final double forward_limelight = LimelightSubsystem.limelightRangeProportional();
-  //       xSpeed = forward_limelight;
-
-  //       fieldRelative = false;
-  //   }
-
-  //  drive(xSpeed, ySpeed, rot, fieldRelative, true);
-  // }
-
-
-   
-
   public void setX() {
     m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));

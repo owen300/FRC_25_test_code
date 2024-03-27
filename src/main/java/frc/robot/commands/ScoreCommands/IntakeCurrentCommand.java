@@ -1,15 +1,18 @@
 package frc.robot.commands.ScoreCommands;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.EndEffectorSubsystem;
+import static frc.robot.Constants.SubsystemConstants;
 
-public class IntakeCommand extends Command{
+public class IntakeCurrentCommand extends Command{
 
     private final EndEffectorSubsystem intakeSubsystem;
     private final double speed;
     private final boolean inverted; 
+    private Debouncer filter_debouncer = new Debouncer(SubsystemConstants.kIntakeDebounceTime, Debouncer.DebounceType.kBoth);
 
-    public IntakeCommand(EndEffectorSubsystem intakeSubsystem, double speed, boolean inverted){
+    public IntakeCurrentCommand(EndEffectorSubsystem intakeSubsystem, double speed, boolean inverted){
         this.intakeSubsystem = intakeSubsystem; 
         this.speed = speed;
         this.inverted = inverted; 
@@ -23,7 +26,11 @@ public class IntakeCommand extends Command{
 
     @Override 
     public boolean isFinished(){ 
-        return !intakeSubsystem.getSensorInput(); 
+        if(SubsystemConstants.kIntakeDebounce) { 
+            return filter_debouncer.calculate(EndEffectorSubsystem.filteredCurrentIntake>SubsystemConstants.kIntakeCurrentThreshold);
+        } else {
+            return EndEffectorSubsystem.filteredCurrentIntake > SubsystemConstants.kIntakeCurrentThreshold;
+        } 
     }
 
     @Override

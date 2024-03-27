@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,8 +48,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     static double hangEncoderSetpoint; 
     static PIDController hangPIDController; 
 
-    
+    DigitalInput sensor;
 
+    
 
     public EndEffectorSubsystem(){
       intakeMotor = new CANSparkMax(SubsystemConstants.kIntakeMotorCANID, MotorType.kBrushless);
@@ -97,7 +99,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
       hangPIDController = new PIDController(SubsystemConstants.kHangP, SubsystemConstants.kHangI, SubsystemConstants.kHangD);
 
-      shootLead.burnFlash(); 
+      sensor = new DigitalInput(SubsystemConstants.kSensorInput); 
+
+      shootLead.burnFlash();  
       shootFollow.burnFlash(); 
       liftLeadLeft.burnFlash();
       liftFollowLeft.burnFlash();
@@ -126,10 +130,6 @@ public class EndEffectorSubsystem extends SubsystemBase {
   public void resetliftEncoder(){
     liftEncoder.reset();
   }
-  public void testIntake(){ //delete
-    intakeMotor.set(0.3);
-  }
-
 
   public static void lift(double pose) { 
     liftLeadLeftPIDController.setSetpoint(pose);
@@ -182,16 +182,22 @@ public class EndEffectorSubsystem extends SubsystemBase {
    SmartDashboard.putNumber("Hang Setpoint", hangEncoderSetpoint);
   }
 
+  public boolean getSensorInput(){
+      return sensor.get();
+  }
+
+
   @Override
   public void periodic(){
-    filteredCurrentIntake = filterIntake.calculate(intakeMotor.getOutputCurrent());
-    filteredCurrentShoot = filterShoot.calculate(shootLead.getOutputCurrent());
-    
+    // filteredCurrentIntake = filterIntake.calculate(intakeMotor.getOutputCurrent());
+    // filteredCurrentShoot = filterShoot.calculate(shootLead.getOutputCurrent());
+    getSensorInput();
+   
     calculateLift();
     getLiftDistance();
     calculateHang();
     getHangDistance();
 
-   }
+  }
 
 }

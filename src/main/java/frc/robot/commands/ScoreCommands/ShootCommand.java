@@ -7,14 +7,12 @@ import frc.robot.subsystems.EndEffectorSubsystem;
 
 public class ShootCommand extends Command{
 
-    private final EndEffectorSubsystem shootSubsystem;
     private final double speed; 
     double startTime;
 
-    public ShootCommand(EndEffectorSubsystem shootSubsystem, double speed){
-        this.shootSubsystem = shootSubsystem; 
+    public ShootCommand( double speed){
         this.speed = speed;
-        addRequirements(shootSubsystem);
+        addRequirements();
     }
 
     @Override 

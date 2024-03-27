@@ -17,59 +17,59 @@ public class ScoreCommandHolder extends Command {
 
      public SequentialCommandGroup intakeNote(){
         return new SequentialCommandGroup(
-            new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kIntakeFirstSetpoint),
-            new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kIntakeSecondSetpoint),
-            new IntakeCommand(endEffectorSubsystem, 0.8, false), 
+            new LiftCommand(ScoreCommandHolderConstants.kIntakeFirstSetpoint),
+            new LiftCommand(ScoreCommandHolderConstants.kIntakeSecondSetpoint),
+            new IntakeCommand(endEffectorSubsystem, 1, false), 
             new IntakeTimeCommand(endEffectorSubsystem, 0.1, true, 0.3),
-            new LiftCommand (endEffectorSubsystem, ScoreCommandHolderConstants.kCompactSetpoint)
+            new LiftCommand(ScoreCommandHolderConstants.kCompactSetpoint)
         ); 
     }
 
       public SequentialCommandGroup shootNote(){
         return new SequentialCommandGroup(
             new IntakeTimeCommand(endEffectorSubsystem, 0.7, false, 2),
-            new ShootCommand(endEffectorSubsystem, 0),
+            new ShootCommand(0),
             compactPosition()
         ); 
     }
 
     public SequentialCommandGroup scoreAmp(){
         return new SequentialCommandGroup(
-            new ShootCommand(endEffectorSubsystem, 0.3),
-            new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kAmpSetpoint)
+            new ShootCommand(0.3),
+            new LiftCommand(ScoreCommandHolderConstants.kAmpSetpoint)
         ); 
     }
 
     public SequentialCommandGroup scoreSpeaker(){
         return new SequentialCommandGroup(
-            new ShootCommand(endEffectorSubsystem, 0.85),
-            new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kSpeakerSetpoint)
+            new ShootCommand(0.85),
+            new LiftCommand(ScoreCommandHolderConstants.kSpeakerSetpoint)
         ); 
     }
 
     public SequentialCommandGroup compactPosition(){
         return new SequentialCommandGroup(
-            new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kCompactSetpoint),
+            new LiftCommand(ScoreCommandHolderConstants.kCompactSetpoint),
             new IntakeCommand(endEffectorSubsystem, 0, false ),
-            new ShootCommand(endEffectorSubsystem, 0) 
+            new ShootCommand(0) 
         ); 
     }
 
     public Command setFlyWheel(){
-        return new ShootCommand(endEffectorSubsystem, 0.85); 
+        return new ShootCommand(0.85); 
     }
 
     public Command setFlyWheelZero(){
-        return new ShootCommand(endEffectorSubsystem, 0); 
+        return new ShootCommand(0); 
     }
 
 
     public SequentialCommandGroup getHangReady(){
-        return new SequentialCommandGroup(new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kLiftHangSetpoint), new WaitCommand(0.5), new HangCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kHangUpSetpoint) ); 
+        return new SequentialCommandGroup(new LiftCommand(ScoreCommandHolderConstants.kLiftHangSetpoint), new WaitCommand(0.5), new HangCommand(ScoreCommandHolderConstants.kHangUpSetpoint) ); 
     }
 
     public Command hang(){
-        return new HangCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kHangDownSetpoint);
+        return new HangCommand(ScoreCommandHolderConstants.kHangDownSetpoint);
     }
 
     public SequentialCommandGroup outtake(){
@@ -77,7 +77,7 @@ public class ScoreCommandHolder extends Command {
     }
 
     public Command shootMotorZero(){
-        return new ShootCommand(endEffectorSubsystem, 0); 
+        return new ShootCommand(0); 
     }
 
     public Command intakeMotorZero(){
@@ -85,7 +85,7 @@ public class ScoreCommandHolder extends Command {
     }
 
     public Command intakeDown(){
-        return new LiftCommand(endEffectorSubsystem, ScoreCommandHolderConstants.kHangSetpoint); 
+        return new LiftCommand(ScoreCommandHolderConstants.kHangSetpoint); 
     }
 
  

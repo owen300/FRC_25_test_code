@@ -54,7 +54,7 @@ public final class Constants {
     // This changes the drive speed of the module (a pinion gear with more teeth
     // will result in a
     // robot that drives faster).
-    public static final int kDrivingMotorPinionTeeth = 14 ;
+    public static final int kDrivingMotorPinionTeeth = 15;
 
     public static final boolean kTurningEncoderInverted = true;
 
@@ -166,6 +166,8 @@ public final class Constants {
     public static final double kHangMaxPower = 1;  
 
     public static final int kHangEncoderChannel = 2; 
+
+    public static final int kSensorInput = 3; 
 
   }
 

@@ -9,6 +9,7 @@ public class LiftSetpointDown extends Command{
 
     private final EndEffectorSubsystem liftSubsystem;
     private double setPoint;
+    double startTime; 
 
     public LiftSetpointDown(EndEffectorSubsystem liftSubsystem){
         this.liftSubsystem = liftSubsystem; 
@@ -17,12 +18,18 @@ public class LiftSetpointDown extends Command{
 
     @Override 
     public void initialize(){
+       startTime = Timer.getFPGATimestamp();
        setPoint = liftSubsystem.getPose();
     }
 
     @Override 
     public void execute(){
            setPoint +=0.01; 
+    }
+
+    @Override 
+    public boolean isFinished(){ 
+      return Timer.getFPGATimestamp() - startTime > 0.5;
     }
 
     public void end(boolean interuppted){

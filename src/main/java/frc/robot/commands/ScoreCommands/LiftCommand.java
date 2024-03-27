@@ -7,15 +7,13 @@ import frc.robot.subsystems.EndEffectorSubsystem;
 
 public class LiftCommand extends Command{
 
-    private final EndEffectorSubsystem liftSubsystem;
     private final double setPoint;
     private final double TOLERANCE = 0.5; 
     double startTime;
 
-    public LiftCommand(EndEffectorSubsystem liftSubsystem, double setpoint){
-        this.liftSubsystem = liftSubsystem; 
+    public LiftCommand(double setpoint){
         this.setPoint = setpoint;
-        addRequirements(liftSubsystem);
+        addRequirements();
     }
 
     @Override 
