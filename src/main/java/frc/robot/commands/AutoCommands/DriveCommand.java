@@ -23,7 +23,7 @@ public class DriveCommand extends Command{
     @Override 
     public void initialize(){
         startTime = Timer.getFPGATimestamp();
-      swerveDriveSubsystem.driveRobotRelative(chassisSpeeds);
+      swerveDriveSubsystem.drive(chassisSpeeds);
     }
 
     @Override 

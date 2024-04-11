@@ -56,12 +56,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.swerveDriveSubsystem.getRoll();
+    
   }
 
   @Override
   public void teleopPeriodic() {
-     m_robotContainer.swerveDriveSubsystem.getRoll();
+     
 
   }
 

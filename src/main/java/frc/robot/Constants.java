@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.pathplanner.lib.util.PIDConstants;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -111,6 +112,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
+    public static final PIDConstants TRANSLATION_PID =new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants ANGLE_PID =new PIDConstants(5.0, 0.0, 0.0);
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;

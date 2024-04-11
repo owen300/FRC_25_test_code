@@ -1,11 +1,14 @@
 package frc.robot;
 
 
+import java.io.File;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +29,8 @@ public class RobotContainer {
 
   //SUBSYSTEM
   //SmartSwerveDriveSubsystem swerveDriveSubsystem = new SmartSwerveDriveSubsystem(limelightSubsystem);
-  public SwerveDriveSubsystem swerveDriveSubsystem = new SwerveDriveSubsystem();
+  public SwerveDriveSubsystem swerveDriveSubsystem = new SwerveDriveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                         "swerve"));
   
 
  
@@ -70,11 +74,10 @@ public class RobotContainer {
     configureBindings();
      swerveDriveSubsystem.setDefaultCommand(
         new RunCommand(
-            () -> swerveDriveSubsystem.drive(
-                -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriveDeadband), // will be ignored if autoTargetCommand is running
-                true, true),
+            () -> swerveDriveSubsystem.driveCommand(
+              () -> MathUtil.applyDeadband(driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
+              () -> MathUtil.applyDeadband(driverController.getLeftX(), Constants.OIConstants.kDriveDeadband),
+              () -> driverController.getRightX() * 0.5),
             swerveDriveSubsystem));
     setAutoCommands();
    // SmartDashboard.putData("Autos", AutoChooser);
@@ -86,7 +89,7 @@ public class RobotContainer {
  
     //Co-Driver Controls
     // xButton.onTrue(new RunCommand(() -> swerveDriveSubsystem.setX(), swerveDriveSubsystem));
-    yButton.onTrue(new InstantCommand(swerveDriveSubsystem::zeroHeading));
+    yButton.onTrue(new InstantCommand(swerveDriveSubsystem::zeroGyro));
     
 
   }
