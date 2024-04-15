@@ -15,13 +15,13 @@
     "canbus": null
   },
   "encoder": {
-    "type": "sparkmax_analog",
-    "id": 0,
+    "type": "attached",
+    "id": 1,
     "canbus": null
   },
   "inverted": {
     "drive": false,
     "angle": false
   },
-  "absoluteEncoderInverted": false
+  "absoluteEncoderInverted": true
 }

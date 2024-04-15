@@ -16,12 +16,12 @@
   },
   "encoder": {
     "type": "attached",
-    "id": 0,
+    "id": 6,
     "canbus": null
   },
   "inverted": {
     "drive": false,
     "angle": false
   },
-  "absoluteEncoderInverted": false
+  "absoluteEncoderInverted": true
 }
