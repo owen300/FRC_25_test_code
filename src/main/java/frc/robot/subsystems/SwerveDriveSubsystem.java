@@ -8,7 +8,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.pathfinding.LocalADStar;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -18,6 +21,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -27,10 +31,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.LocalADStarAK;
+
 import java.io.File;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -48,7 +55,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveDriveSubsystem extends SubsystemBase
 {
-  private final boolean firstUpdate=false;
+  private Pose2d visionpose=new Pose2d();
   private final AprilTagFieldLayout aprilTagFieldLayout=AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private final PhotonCamera cam=new PhotonCamera(Constants.PhotonConstants.camName);
   private final PhotonPoseEstimator photonPose=new PhotonPoseEstimator(aprilTagFieldLayout,PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cam, Constants.PhotonConstants.camLocation);
@@ -115,6 +122,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
    */
   public void setupPathPlanner()
   {
+    //Pathfinding.setPathfinder(new LocalADStarAK());
     AutoBuilder.configureHolonomic(
         this::getPose, // Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -141,6 +149,15 @@ public class SwerveDriveSubsystem extends SubsystemBase
         },
         this // Reference to this subsystem to set requirements
                                   );
+    // PathPlannerLogging.setLogActivePathCallback(
+    //     (activePath) -> {
+    //       Logger.recordOutput(
+    //           "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+    //     });
+    // PathPlannerLogging.setLogTargetPoseCallback(
+    //     (targetPose) -> {
+    //       Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
+    //     });
   }
 
   /**
@@ -298,7 +315,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
    *
    * @param translation   {@link Translation2d} that is the commanded linear velocity of the robot, in meters per
    *                      second. In robot-relative mode, positive x is torwards the bow (front) and positive y is
-   *                      torwards port (left).  In field-relative mode, positive x is away from the alliance wall
+   *                 :    torwards port (left).  In field-relative mode, positive x is away from the alliance wall
    *                      (field North) and positive y is torwards the left wall when looking through the driver station
    *                      glass (field West).
    * @param rotation      Robot angular rate, in radians per second. CCW positive.  Unaffected by field/robot
@@ -337,26 +354,20 @@ public class SwerveDriveSubsystem extends SubsystemBase
     SwerveDriveSubsystem.resetOdometry(pose);
   }
   public Optional<EstimatedRobotPose> data = photonPose.update();
+
   public void periodic()
   {
     if(!data.isEmpty()){//if there is data from photon vision this runs and updates the odometry with its pose
-          // if (!firstUpdate) {//TODO: test if it even wroks first then add this
-          //   m_odometry.resetPosition(m_gyro.getRotation2d(),
-          //    new SwerveModulePosition[] {
-          //   m_frontLeft.getPosition(),
-          //   m_frontRight.getPosition(),//this whole section here is if we 
-          //   m_rearLeft.getPosition(),//dont line up the bot perfectly,
-          //   m_rearRight.getPosition()//vision gives it its initial pose
-          // },
-          //    data.get().estimatedPose.toPose2d());
-
-          //   firstUpdate=true;
-          // }
+          
           SmartDashboard.putString("Vision pose",data.get().estimatedPose.toPose2d().toString());//for testing
 
           SwerveDriveSubsystem.addVisionMeasurement(data.get().estimatedPose.toPose2d(),data.get().timestampSeconds);//adds in vision
-        
+          visionpose=data.get().estimatedPose.toPose2d();
         }
+
+        //Logger.recordOutput("Drive/Pose", SwerveDriveSubsystem.getPose());
+        //Logger.recordOutput("MySwerveModuleStates", SwerveDriveSubsystem.getStates());
+        //Logger.recordOutput("Drive/VisionPose", visionpose);
   }
 
   @Override
