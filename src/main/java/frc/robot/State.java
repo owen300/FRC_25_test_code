@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -9,16 +10,16 @@ public class State {
     //the benifit of this system is that all coridnation is done here 
     // making coridnation between subsystems more central and simple
 
-    //TODO: IMPORTANT, USE WRAPPED COMMANDS FOR ALL MECHINISM COMMANDS
+    //TODO: IMPORTANT, USE WRAPPED COMMANDS FOR ALL MECHANISM COMMANDS
     //If the command should end in a state other than stable override the end meathod,
     // and set to the proper state
 
     //For example, when setting to shoot amp or speaker, 
     //you should make sure the current state is readytoamp/speaker before shooting
 
-    private static ArrayList<robotState> dontRunIfBlocked= new ArrayList<robotState>();
-    public static enum robotState{
-        Stable(blockingType.NONE),//the second enum decided how this state blocks other states, 
+    private static HashSet<robotState> dontRunIfBlocked= new HashSet<robotState>();
+    public static enum robotState{//first enum is current state, here are a couple sample ones to show how this years bot might use it
+        Stable(blockingType.NONE),//the second enum decides how this state blocks other states, 
         Intake(blockingType.PARTIAL),//if wanted, you could make even more types of blocking
         Speaker_setpoint(blockingType.PARTIAL),
         Amp_setpoint(blockingType.PARTIAL),
@@ -56,17 +57,22 @@ public class State {
     public static void setState(robotState state){//normal set state
         if(!conflicts(state)){
        currentState=state;
+       update();
         }
     }
     
     public static void setStateOverride(robotState state){//TODO: do not use unless needed, you dont want to break anything
        currentState=state;
+       update();
     }
 
-     public static void update(){//should be called each loop, sets states and runs commands and etc
+     public static void update(){//runs the commands
         switch(currentState){
          case Amp_setpoint://again, make sure your commands that need to end in something other than stable
-         //extend the end meathod and set the proper end state
+         //override the end meathod and set the proper end state
+
+         //each state can contain either a command or command group, if using a command group make sure only 
+         //the last command sets the next state
 
             //put commands to move arm to amp, and all things involved with geting ready for amping here
             
@@ -82,7 +88,7 @@ public class State {
         return currentState;
     }
 
-   public static boolean conflicts(robotState state){
+   public static boolean conflicts(robotState state){//check conficts
     if(currentState.type==blockingType.FULL){
         return true;
     } else if(currentState.type==blockingType.PARTIAL){
