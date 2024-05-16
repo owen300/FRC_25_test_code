@@ -3,7 +3,6 @@ package frc.robot;
 import com.pathplanner.lib.util.PIDConstants;
 import com.revrobotics.CANSparkBase.IdleMode;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -121,7 +120,7 @@ public final class Constants {
   }
   public static final class PhotonConstants{
     public static final Transform3d camLocation= new Transform3d(new Translation3d(0,0,0),new Rotation3d(0,0,0));
-    public static final String camName="cam";
+    public static final String camName= "Arducam_OV9281_USB_Camera (1)";
   }
 
 }
