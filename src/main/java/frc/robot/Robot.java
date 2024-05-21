@@ -34,7 +34,7 @@ public class Robot extends LoggedRobot
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  public RobotContainer m_robotContainer;
 
   private Timer disabledTimer;
 
@@ -54,6 +54,7 @@ public class Robot extends LoggedRobot
   @Override
   public void robotInit()
   {
+    m_robotContainer.vision.init();
 //     Logger.recordMetadata("Frc 2025 tests", "tests"); // Set a metadata value
 
 // if (isReal()) {
@@ -88,6 +89,7 @@ public class Robot extends LoggedRobot
   @Override
   public void robotPeriodic()
   {
+    m_robotContainer.vision.updateAll();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

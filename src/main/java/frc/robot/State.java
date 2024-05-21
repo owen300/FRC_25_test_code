@@ -6,7 +6,7 @@ import java.util.HashSet;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class State {
-
+    //todos are used for important notes lol
     //the benifit of this system is that all coridnation is done here 
     // making coridnation between subsystems more central and simple
 

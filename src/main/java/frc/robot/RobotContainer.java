@@ -18,6 +18,8 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 
 import java.io.File;
 
+import frc.robot.subsystems.VisionSubsystem;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -25,9 +27,9 @@ import java.io.File;
  */
 public class RobotContainer
 {
-
+  public final VisionSubsystem vision=new VisionSubsystem();
   // The robot's subsystems and commands are defined here...
-  private final SwerveDriveSubsystem drivebase = new SwerveDriveSubsystem(new File(Filesystem.getDeployDirectory(),
+  public final SwerveDriveSubsystem drivebase = new SwerveDriveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve"));
 
   // Replace with CommandPS4Controller or CommandJoystick if needed

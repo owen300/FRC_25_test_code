@@ -14,7 +14,7 @@ import java.util.List;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
-
+// dont delete this class, might be used if i do logging
 public class LocalADStarAK implements Pathfinder {
   private final ADStarIO io = new ADStarIO();
 

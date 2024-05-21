@@ -14,6 +14,7 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
@@ -50,6 +51,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveDriveSubsystem extends SubsystemBase
 {
+  public Pigeon2 pigeon;
   private Pose2d visionpose=new Pose2d();
   private final AprilTagFieldLayout aprilTagFieldLayout=AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private final PhotonCamera cam=new PhotonCamera(Constants.PhotonConstants.camName);
@@ -58,7 +60,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
   /**
    * Swerve drive object.
    */
-  private final SwerveDrive SwerveDriveSubsystem;
+  public final SwerveDrive SwerveDriveSubsystem;
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
@@ -99,6 +101,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
     SwerveDriveSubsystem.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
     SwerveDriveSubsystem.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
     setupPathPlanner();
+    pigeon=(Pigeon2)SwerveDriveSubsystem.swerveDriveConfiguration.imu.getIMU();
   }
 
   /**
@@ -348,38 +351,44 @@ public class SwerveDriveSubsystem extends SubsystemBase
   public void initStartPose(Pose2d pose){
     SwerveDriveSubsystem.resetOdometry(pose);
   }
-  public Optional<EstimatedRobotPose> data = photonPose.update();
 
+  // public Optional<EstimatedRobotPose> data = photonPose.update();//old code if needed
+
+  // public void runPhoton(){
+  //   if(!data.isEmpty()){//if there is data from photon vision this runs and updates the odometry with its pose
+  //     SmartDashboard.putString("Vision pose",data.get().estimatedPose.toPose2d().toString());//for testing
+  //     SwerveDriveSubsystem.addVisionMeasurement(data.get().estimatedPose.toPose2d(),data.get().timestampSeconds);//adds in vision
+  //     visionpose=data.get().estimatedPose.toPose2d();
+  //   }
+  // }
+
+  // public void runLime(){
+  //   boolean doRejectUpdate=false;
+  //   LimelightHelpers.SetRobotOrientation("lime1", SwerveDriveSubsystem.swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+  //   LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("lime1");
+  //   if(Math.abs(pigeon.getAngularVelocityYWorld().getValue()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+  //   {
+  //     doRejectUpdate = true;
+  //   }
+  //   if(mt2.tagCount == 0)
+  //   {
+  //     doRejectUpdate = true;
+  //   }
+  //   if(!doRejectUpdate)
+  //   {
+  //     //SwerveDriveSubsystem.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+  //     SwerveDriveSubsystem.addVisionMeasurement(
+  //     mt2.pose,
+  //     mt2.timestampSeconds,VecBuilder.fill(.7,.7,9999999));
+      
+  //     SmartDashboard.putString("Lime pose",data.get().estimatedPose.toPose2d().toString());
+  //   }
+  // }
+   
   public void periodic()
   {
-    if(!data.isEmpty()){//if there is data from photon vision this runs and updates the odometry with its pose
-          SmartDashboard.putString("Vision pose",data.get().estimatedPose.toPose2d().toString());//for testing
-          LimelightHelpers.getBotPose2d_wpiBlue("lime1");
-          SwerveDriveSubsystem.addVisionMeasurement(data.get().estimatedPose.toPose2d(),data.get().timestampSeconds);//adds in vision
-          visionpose=data.get().estimatedPose.toPose2d();
-        }
-
-
-        boolean doRejectUpdate=false;
-         LimelightHelpers.SetRobotOrientation("limelight", SwerveDriveSubsystem.swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-      if(Math.abs(SwerveDriveSubsystem.swerveDriveConfiguration.imu.getIMU()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-      {
-        doRejectUpdate = true;
-      }
-      if(mt2.tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
-      if(!doRejectUpdate)
-      {
-        SwerveDriveSubsystem.swerveDrivePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-        SwerveDriveSubsystem.addVisionMeasurement(
-            mt2.pose,
-            mt2.timestampSeconds);
-      }
-
-        //Logger.recordOutput("Drive/Pose", SwerveDriveSubsystem.getPose());
+    SmartDashboard.putString("current pose", SwerveDriveSubsystem.getPose().toString());
+        //Logger.recordOutput("Drive/Pose", SwerveDriveSubsystem.getPose());//logging, probably will not use
         //Logger.recordOutput("MySwerveModuleStates", SwerveDriveSubsystem.getStates());
         //Logger.recordOutput("Drive/VisionPose", visionpose);
   }
