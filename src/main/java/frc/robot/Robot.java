@@ -46,7 +46,6 @@ public class Robot extends LoggedRobot
   @Override
   public void robotInit()
   {
-    m_robotContainer.vision.init();
 //     Logger.recordMetadata("Frc 2025 tests", "tests"); // Set a metadata value
 
 // if (isReal()) {
@@ -65,7 +64,7 @@ public class Robot extends LoggedRobot
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
+    m_robotContainer.vision.init();
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
@@ -81,7 +80,6 @@ public class Robot extends LoggedRobot
   @Override
   public void robotPeriodic()
   {
-    m_robotContainer.vision.updateAll();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -130,6 +128,7 @@ public class Robot extends LoggedRobot
   @Override
   public void autonomousPeriodic()
   {
+    m_robotContainer.vision.updateAll();
   }
 
   @Override
@@ -153,6 +152,7 @@ public class Robot extends LoggedRobot
   @Override
   public void teleopPeriodic()
   {
+    m_robotContainer.vision.updateAll();
   }
 
   @Override
