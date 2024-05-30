@@ -9,7 +9,7 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class DriveCommand extends Command{
 
     private final SwerveDriveSubsystem swerveDriveSubsystem;
-    private double time; 
+    private final double time; 
     double startTime; 
     ChassisSpeeds chassisSpeeds = new ChassisSpeeds(1, 0,0); 
     

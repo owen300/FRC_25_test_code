@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.JoystickConstants;
 
 public class Joystick {
-    private int m_port;
-    XboxController m_joystick;
+    private final int m_port;
 
     public Joystick(int port){
         m_port = port;

@@ -5,13 +5,9 @@
 package frc.robot.subsystems;
 
 import java.io.File;
-import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
-import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -22,9 +18,6 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -38,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
-import frc.utils.LimelightHelpers;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -52,10 +44,10 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveDriveSubsystem extends SubsystemBase
 {
   public Pigeon2 pigeon;
-  private Pose2d visionpose=new Pose2d();
-  private final AprilTagFieldLayout aprilTagFieldLayout=AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-  private final PhotonCamera cam=new PhotonCamera(Constants.PhotonConstants.camName);
-  private final PhotonPoseEstimator photonPose=new PhotonPoseEstimator(aprilTagFieldLayout,PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cam, Constants.PhotonConstants.camLocation);
+  //private Pose2d visionpose=new Pose2d();
+  // private final AprilTagFieldLayout aprilTagFieldLayout=AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  // private final PhotonCamera cam=new PhotonCamera(Constants.PhotonConstants.camName);
+  // private final PhotonPoseEstimator photonPose=new PhotonPoseEstimator(aprilTagFieldLayout,PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cam, Constants.PhotonConstants.camLocation);
   
   /**
    * Swerve drive object.
@@ -384,7 +376,7 @@ public class SwerveDriveSubsystem extends SubsystemBase
   //     SmartDashboard.putString("Lime pose",data.get().estimatedPose.toPose2d().toString());
   //   }
   // }
-   
+   @Override
   public void periodic()
   {
     SmartDashboard.putString("current pose", SwerveDriveSubsystem.getPose().toString());

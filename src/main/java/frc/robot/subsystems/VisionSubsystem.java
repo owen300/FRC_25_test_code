@@ -8,7 +8,6 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 
 public class VisionSubsystem extends SubsystemBase{
     public final LimeLocalizationSubsystem limeR= new LimeLocalizationSubsystem("limeR");
@@ -22,11 +21,11 @@ public class VisionSubsystem extends SubsystemBase{
         return limeL.getPose();
     }
 
-    public SwerveDriveSubsystem sd;
-    public void init(){
-        SwerveDriveSubsystem sd=Robot.getInstance().m_robotContainer.drivebase;
-        limeL.init();
-        limeR.init();
+    private SwerveDriveSubsystem sd;
+    public void init(SwerveDriveSubsystem sd){
+        this.sd=sd;
+        limeL.init(sd);
+        limeR.init(sd);
         photonR.init("camR");
         photonR.init("camL");
     }

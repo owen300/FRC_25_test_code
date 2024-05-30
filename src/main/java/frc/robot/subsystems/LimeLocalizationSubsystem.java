@@ -2,13 +2,9 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.utils.LimelightHelpers;
-import swervelib.SwerveDrive;
 
 public class LimeLocalizationSubsystem{
     public String name= "";
@@ -18,9 +14,9 @@ public class LimeLocalizationSubsystem{
       out= this.name.concat(" pose");
     }
 
-    public SwerveDriveSubsystem sd;
-    public void init(){
-        SwerveDriveSubsystem sd=Robot.getInstance().m_robotContainer.drivebase;
+    private SwerveDriveSubsystem sd;
+    public void init(SwerveDriveSubsystem sd){
+        this.sd=sd;
     }
     public double time=0;
 

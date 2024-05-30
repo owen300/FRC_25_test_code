@@ -4,10 +4,9 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,11 +14,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-
-import java.io.File;
-
 import frc.robot.subsystems.VisionSubsystem;
-
+import frc.robot.subsystems.SensorSubsystem;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -27,6 +23,7 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class RobotContainer
 {
+  public final SensorSubsystem sensors=new SensorSubsystem();
   public final VisionSubsystem vision=new VisionSubsystem();
   // The robot's subsystems and commands are defined here...
   public final SwerveDriveSubsystem drivebase = new SwerveDriveSubsystem(new File(Filesystem.getDeployDirectory(),

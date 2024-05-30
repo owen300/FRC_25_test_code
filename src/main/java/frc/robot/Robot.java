@@ -7,9 +7,8 @@ package frc.robot;
 import java.io.File;
 import java.io.IOException;
 
-import org.littletonrobotics.junction.LoggedRobot;
-
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,7 +19,7 @@ import swervelib.parser.SwerveParser;
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
  * project, you must also update the build.gradle file in the project.
  */
-public class Robot extends LoggedRobot
+public class Robot extends TimedRobot
 {
 
   private static Robot   instance;
@@ -31,7 +30,12 @@ public class Robot extends LoggedRobot
   private Timer disabledTimer;
 
   public Robot()
-  {
+  {//this runs all sensors and vision faster than the normal loop
+    //vision actually updates the odometry, while sensors just update
+    //thier respective values
+    addPeriodic(()->{m_robotContainer.vision.updateAll();
+      m_robotContainer.sensors.updateAll();
+    }, 0.01);
     instance = this;
   }
 
@@ -64,7 +68,7 @@ public class Robot extends LoggedRobot
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_robotContainer.vision.init();
+    m_robotContainer.vision.init(m_robotContainer.drivebase);
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
@@ -128,7 +132,7 @@ public class Robot extends LoggedRobot
   @Override
   public void autonomousPeriodic()
   {
-    m_robotContainer.vision.updateAll();
+    //m_robotContainer.vision.updateAll();
   }
 
   @Override
@@ -152,7 +156,7 @@ public class Robot extends LoggedRobot
   @Override
   public void teleopPeriodic()
   {
-    m_robotContainer.vision.updateAll();
+    //m_robotContainer.vision.updateAll();
   }
 
   @Override
