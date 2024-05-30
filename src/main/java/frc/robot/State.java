@@ -3,9 +3,10 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;//
 
-public class State {
+public class State {//this is depriciated and will not be used most likely
+    
     //todos are used for important notes lol
     //the benifit of this system is that all coridnation is done here 
     // making coridnation between subsystems more central and simple
