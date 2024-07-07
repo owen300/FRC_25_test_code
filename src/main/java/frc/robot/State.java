@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;//
-
+//@SuppressWarnings
 public class State {//this is depriciated and will not be used most likely
     
     //todos are used for important notes lol
