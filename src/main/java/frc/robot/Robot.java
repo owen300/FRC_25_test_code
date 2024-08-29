@@ -7,6 +7,8 @@ package frc.robot;
 import java.io.File;
 import java.io.IOException;
 
+import com.pathplanner.lib.commands.PathfindingCommand;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -34,9 +36,9 @@ public class Robot extends TimedRobot
     //vision actually updates the odometry, while sensors just update
     //thier respective values
     addPeriodic(()->{m_robotContainer.vision.updateAll();
-      m_robotContainer.sensors.updateAll();
-    }, 0.01);
-    instance = this;
+      m_robotContainer.sensors.updateAll();//all susbsystems that need pid should have the methods that
+    }, 0.01,0.005);//update pid here to make sure they run as fast as possible, ONLY PID, nothing else
+    instance = this;//it wont be stable then
   }
 
   public static Robot getInstance()
@@ -72,6 +74,7 @@ public class Robot extends TimedRobot
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   /**
